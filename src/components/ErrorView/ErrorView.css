@@ -1,0 +1,12 @@
+.ErrorMessage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Fira Sens';
+    font-weight: 700;
+    font-size: 24px;
+    color: #1f1d1c;
+    background-color: #5c919c;
+}
