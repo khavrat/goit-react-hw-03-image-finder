@@ -29,7 +29,7 @@ export default class ImageGallery extends Component {
         );
         if (response.data.hits.length === 0) {
           this.setState({
-            error: `On "${nextSearch}" found nothing, try again`,
+            error: `Oops, on "${nextSearch}" found nothing, try again`,
             loading: false,
           });
         } else if (prevPage !== nextPage) {
