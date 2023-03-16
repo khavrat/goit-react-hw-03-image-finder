@@ -4,7 +4,7 @@ import './ErrorView.css';
 export default function SearchErrorView({ message }) {
     return (
       <div className="ErrorMessage" role="alert">
-        <img src={errorImg} width="400" />
+        <img src={errorImg} width="400" alt="message about error" />
         {message}
       </div>
     );
