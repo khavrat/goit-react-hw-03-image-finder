@@ -1,5 +1,4 @@
 import errorImg from 'Images/errorImg.png';
-import './ErrorView.css';
 
 export default function SearchErrorView({ message }) {
     return (

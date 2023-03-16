@@ -17,9 +17,9 @@ class Button extends Component {
     if (prevProps.images !== this.props.images) {
       this.isVisibleBtn();
     }
-    if (prevProps.searchField !== this.props.searchField) {
-      this.setState({currentPage: 1})
-    }
+    // if (prevProps.searchField !== this.props.searchField) {
+    //   this.setState({currentPage: 1})
+    // }
   }
 
   isVisibleBtn = () => {
@@ -43,8 +43,8 @@ class Button extends Component {
 
   render() {
     return (
-      <button type="button" onClick={this.onClick}>
-        Loade more
+      <button className="Button" type="button" onClick={this.onClick}>
+        {this.props.children}
       </button>
     );
   }

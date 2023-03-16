@@ -1,13 +1,14 @@
 import { Component } from 'react';
 import axios from 'axios';
 import SearchErrorView from '../ErrorView/ErrorView';
+import LoadingView from '../LoadingView/LoadingView';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 
 const URL = 'https://pixabay.com/api/';
 const API_KEY = '33239789-edeb40e5557373312058accfd';
 const perPage = '12';
 
-export default class ImageGallery extends Component {
+class ImageGallery extends Component {
   state = {
     images: [],
     loading: false,
@@ -51,12 +52,21 @@ export default class ImageGallery extends Component {
             () => this.props.imagesResAPI(this.state.images)
           );
         }
-        
       } catch (error) {
         this.setState({ error: error.message, loading: false });
       }
     }
   }
+
+  handleImageClick = e => {
+    const { images } = this.state;
+    const { onClickToImage } = this.props;
+
+    const selectedImage = images.find(
+      image => image.webformatURL === e.target.src
+    );
+    onClickToImage(selectedImage);
+  };
 
   // scrollToLastImage = () => {
   //   const lastImage = document.querySelector('.ImageGalleryItem:last-child');
@@ -72,14 +82,14 @@ export default class ImageGallery extends Component {
     const { images, loading, error } = this.state;
 
     if (loading) {
-      return <div>Loading...</div>;
+      return <LoadingView />;
     }
     if (error) {
       return <SearchErrorView message={error} />;
     }
     if (images) {
       return (
-        <ul className="ImageGallery">
+        <ul className="ImageGallery" onClick={this.handleImageClick}>
           {images.map(image => (
             <ImageGalleryItem key={image.id} image={image} />
           ))}
@@ -88,3 +98,5 @@ export default class ImageGallery extends Component {
     }
   }
 }
+
+export default ImageGallery;
