@@ -14,7 +14,7 @@ export default function LoadingView() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '100vh',
+          // height: '100vh',
         }}
         wrapperClassName="Loading"
         visible={true}

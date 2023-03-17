@@ -7,7 +7,6 @@ class Searchbar extends Component {
   };
 
   handleChange = e => {
-    // console.log(e.currentTarget.value);
     const normalizeValue = e.currentTarget.value.toLowerCase();
     this.setState({ searchField: normalizeValue });
   };

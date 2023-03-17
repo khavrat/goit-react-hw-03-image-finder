@@ -10,7 +10,7 @@ const perPage = '12';
 
 class ImageGallery extends Component {
   state = {
-    images: [],
+    response: null,
     loading: false,
     error: null,
   };
@@ -28,29 +28,27 @@ class ImageGallery extends Component {
         const response = await axios.get(
           `${URL}?q=${nextSearch}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=${perPage}&page=${nextPage}`
         );
+        this.setState({ response: response.data }, () =>
+          this.props.getResponseData(this.state.response)
+        );
+
         if (response.data.hits.length === 0) {
           this.setState({
             error: `On "${nextSearch}" found nothing, try again`,
             loading: false,
           });
-        } else if (prevPage !== nextPage) {
-          this.setState(
-            prevState => ({
-              images: [...prevState.images, ...response.data.hits],
-              loading: false,
-              error: null,
-            }),
-            () => this.props.imagesResAPI(this.state.images)
-          );
+        } else if (nextPage > 1) {
+          this.setState(prevState => ({
+            images: [...prevState.images, ...response.data.hits],
+            loading: false,
+            error: null,
+          }));
         } else {
-          this.setState(
-            {
-              images: response.data.hits,
-              loading: false,
-              error: null,
-            },
-            () => this.props.imagesResAPI(this.state.images)
-          );
+          this.setState({
+            images: response.data.hits,
+            loading: false,
+            error: null,
+          });
         }
       } catch (error) {
         this.setState({ error: error.message, loading: false });
@@ -81,22 +79,27 @@ class ImageGallery extends Component {
   render() {
     const { images, loading, error } = this.state;
 
-    if (loading) {
-      return <LoadingView />;
-    }
+    // if (loading) {
+    //   return <LoadingView />;
+    // }
     if (error) {
       return <SearchErrorView message={error} />;
     }
     if (images) {
       return (
-        <ul className="ImageGallery" onClick={this.handleImageClick}>
-          {images.map(image => (
-            <ImageGalleryItem key={image.id} image={image} />
-          ))}
-        </ul>
+        <>
+          <ul className="ImageGallery" onClick={this.handleImageClick}>
+            {images.map(image => (
+              <ImageGalleryItem key={image.id} image={image} />
+            ))}
+            {}
+          </ul>
+          {loading && <LoadingView />}
+        </>
       );
     }
   }
 }
 
 export default ImageGallery;
+export { perPage };

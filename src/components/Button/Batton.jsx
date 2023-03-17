@@ -3,33 +3,45 @@ import { Component } from 'react';
 class Button extends Component {
   state = {
     currentPage: 1,
-    isVisible: false,
+    // isVisible: null,
   };
 
-  componentDidMount() {
-    this.isVisibleBtn();
-  }
+  // componentDidMount() {
+  //   this.isVisible();
+  // }
 
   componentDidUpdate(prevProps) {
     console.log('prevProps.searchField :>> ', prevProps.searchField);
     console.log('this.props.searchField :>> ', this.props.searchField);
 
-    if (prevProps.images !== this.props.images) {
-      this.isVisibleBtn();
-    }
+    // if (prevProps.images !== this.props.images) {
+    //   this.isVisible()
+    //   this.props.isVisibleBtn(this.state.isVisible);
+
+    // }
     // if (prevProps.searchField !== this.props.searchField) {
     //   this.setState({currentPage: 1})
     // }
   }
 
-  isVisibleBtn = () => {
-    const { images } = this.props;
-    if (images && !this.state.isVisible) {
-      this.setState({ isVisible: true });
-    } else if (!images && this.state.isVisible) {
-      this.setState({ isVisible: false });
-    }
-  };
+  // isVisible = () => {
+  //   const { images, totalImages } = this.props;
+  //   // console.log('images.length', images.length);
+  //      console.log('totalImages', totalImages.totalHits);
+ 
+  //   if ( images ) {
+  //     this.setState({ isVisible: true }, () => {
+  //       console.log('isVisible', this.state.isVisible);
+  //     });
+  //     } if (images.length === 0) {
+  //       this.setState({ isVisible: false },() => { console.log('isVisible', this.state.isVisible) });
+  //     } if (images.length === totalImages.totalHits) {
+  //       this.setState(
+  //         { isVisible: false },
+  //         () => { console.log('isVisible', this.state.isVisible) }
+  //       );
+  //   }
+  // };
 
   onClick = () => {
     const { onClick } = this.props;
