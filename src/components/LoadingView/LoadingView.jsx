@@ -1,5 +1,4 @@
 import { ThreeDots } from 'react-loader-spinner';
-// import './LoadingView.css';
 
 export default function LoadingView() {
   return (
@@ -14,7 +13,6 @@ export default function LoadingView() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          // height: '100vh',
         }}
         wrapperClassName="Loading"
         visible={true}

@@ -161,6 +161,14 @@ img {
   max-height: calc(100vh - 24px);
 }
 
+.no-scroll {
+  overflow: hidden;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+}
+
+
 /*
 * Стили компонента Buton (Load more)
 */
@@ -200,4 +208,51 @@ img {
     font-size: 24px;
     color: #1f1d1c;
     background-color: #5c919c;
+}
+
+/* Notification */
+.NtMessage {
+  position:fixed;
+  bottom: 0px;
+  right: 0;
+  width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    font-family: 'Fira Sens';
+    font-weight: 700;
+    font-size: 20px;
+    color: #1f1d1c;
+    background-color: #5c919c;
+    animation-name: slideIn;
+    animation-duration: 1000ms;
+    animation-delay: 2000ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(200%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.NtMessage.hide {
+  animation-name: slideOut;
+      animation-duration: 1000ms;
+    animation-delay: 3000ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes  slideOut {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
 }

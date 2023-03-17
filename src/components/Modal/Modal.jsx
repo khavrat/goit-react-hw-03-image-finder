@@ -2,10 +2,12 @@ import { Component } from 'react';
 
 class Modal extends Component {
   componentDidMount() {
+    document.body.classList.add('no-scroll');
     window.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
+    document.body.classList.remove('no-scroll');
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 

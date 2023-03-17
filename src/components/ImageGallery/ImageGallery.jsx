@@ -66,22 +66,9 @@ class ImageGallery extends Component {
     onClickToImage(selectedImage);
   };
 
-  // scrollToLastImage = () => {
-  //   const lastImage = document.querySelector('.ImageGalleryItem:last-child');
-  //   console.log('lastImage :>> ', lastImage);
-  //   if (lastImage) {
-  //     lastImage.scrollIntoView({
-  //       behavior: 'smooth'
-  //     });
-  //   }
-  // }
-
   render() {
     const { images, loading, error } = this.state;
 
-    // if (loading) {
-    //   return <LoadingView />;
-    // }
     if (error) {
       return <SearchErrorView message={error} />;
     }
