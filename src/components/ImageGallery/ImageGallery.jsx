@@ -12,10 +12,11 @@ class ImageGallery extends Component {
   state = {
     response: null,
     loading: false,
-    error: null,
+    error: '',
   };
 
   async componentDidUpdate(prevProps) {
+    const { getResponseData, handleIsError } = this.props;
     const prevSearch = prevProps.searchField;
     const nextSearch = this.props.searchField;
     const prevPage = prevProps.currentPage;
@@ -28,27 +29,34 @@ class ImageGallery extends Component {
         const response = await axios.get(
           `${URL}?q=${nextSearch}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=${perPage}&page=${nextPage}`
         );
-        this.setState({ response: response.data }, () =>
-          this.props.getResponseData(this.state.response)
+        this.setState(
+          { response: response.data },
+          () => getResponseData(this.state.response),
         );
 
         if (response.data.hits.length === 0) {
-          this.setState({
-            error: `On "${nextSearch}" found nothing, try again`,
-            loading: false,
-          });
-        } else if (nextPage > 1) {
-          this.setState(prevState => ({
-            images: [...prevState.images, ...response.data.hits],
-            loading: false,
-            error: null,
-          }));
+          this.setState(
+            {
+              error: `On "${nextSearch}" found nothing, try again`,
+              loading: false,
+            }, () => handleIsError(this.state.error)
+          );
+        }
+        if (nextPage > 1) {
+          this.setState(
+            prevState => ({
+              images: [...prevState.images, ...response.data.hits],
+              loading: false,
+              error: '',
+            }),
+            () => handleIsError(this.state.error)
+          );
         } else {
           this.setState({
             images: response.data.hits,
             loading: false,
-            error: null,
-          });
+            error: '',
+          }, () => handleIsError(this.state.error));
         }
       } catch (error) {
         this.setState({ error: error.message, loading: false });
