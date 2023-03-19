@@ -1,16 +1,10 @@
 import { Component } from 'react';
-import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
 
 class Searchbar extends Component {
   state = {
     searchField: '',
     isVisibleNtEmpty: false,
-  };
-
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-    isVisibleNtEmpty: PropTypes.func.isRequired,
   };
 
   handleChange = e => {
@@ -26,19 +20,16 @@ class Searchbar extends Component {
     const { onSubmit, isVisibleNtEmpty } = this.props;
     e.preventDefault();
 
-    // if (!this.state.searchField.trim()) {
-    //   this.setState(
-    //     { isVisibleNtEmpty: true },
-    //     () => {
-    //       isVisibleNtEmpty(this.state.isVisibleNtEmpty);
-    //     }
-    //   );
-    // } else {
+    if (!this.state.searchField.trim()) {
+      this.setState({ isVisibleNtEmpty: true }, () => {
+      isVisibleNtEmpty(this.state.isVisibleNtEmpty);
+      });
+      // return alert('Enter a word to search for');
+    } else {
       onSubmit(this.state.searchField);
-    // }
+    }
 
     this.reset();
-
   };
 
   render() {

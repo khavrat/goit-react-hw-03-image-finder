@@ -11,7 +11,7 @@ export default class App extends Component {
   state = {
     response: null,
     searchField: '',
-    isError: null,
+    isError: '',
     currentPage: 1,
     selectedImage: null,
     isVisibleBtn: false,
@@ -23,14 +23,23 @@ export default class App extends Component {
 
   componentDidUpdate(_, prevState) {
     if (prevState.response !== this.state.response) {
-      this.isVisibleNt();
       this.isVisibleBtn();
       this.isVisibleNtEnd();
-    } else if (prevState.searchField !== this.state.searchField) {
-      this.setState({ currentPage: 1 });
-      this.isVisibleNt();
+      // this.setState({
+      //   notification: { isVisibleNtEnd: false, isVisibleNtEmpty: false },
+      // });
+    }
+    if (prevState.searchField !== this.state.searchField) {
+      this.setState({
+        currentPage: 1,
+        notification: { isVisibleNtEnd: false, isVisibleNtEmpty: false },
+      });
     }
   }
+
+  isVisibleNtEmpty = isVisibleNtEmpty => {
+    this.setState({ notification: { isVisibleNtEmpty } });
+  };
 
   isVisibleBtn = () => {
     const { response, currentPage } = this.state;
@@ -44,45 +53,11 @@ export default class App extends Component {
     }
   };
 
-  handleIsVisibleNtEmpty = isVisibleNtEmpty => {
-    this.setState({ notification: { isVisibleNtEmpty } });
-  };
-
-  isVisibleNt = () => {
-    const {
-      notification: { isVisibleNtEmpty, isVisibleNtEnd },
-      isError,
-      searchField,
-    } = this.state;
-
-    if (!searchField && !isError) {
-      this.setState({ notification: { isVisibleNtEmpty: true } });
-    }
-
-    if (isVisibleNtEmpty) {
-      this.setState({
-        notification: { isVisibleNtEnd: false },
-      });
-    }
-
-    if (isError) {
-      this.setState({
-        notification: { isVisibleNtEmpty: false, isVisibleNtEnd: false },
-      });
-    }
-
-    if (isVisibleNtEnd) {
-      this.setState({
-        notification: { isVisibleNtEmpty: false },
-      });
-    }
-  };
-
   isVisibleNtEnd = () => {
     const { response, currentPage, isError } = this.state;
     if (
-      (response.hits.length === 0 && isError === null) ||
-      (currentPage * perPage >= response.totalHits && isError === null)
+      (response.hits.length === 0 && isError === '') ||
+      (currentPage * perPage >= response.totalHits && isError === '')
     ) {
       this.setState({ notification: { isVisibleNtEnd: true } });
     }
@@ -123,7 +98,7 @@ export default class App extends Component {
       <>
         <Searchbar
           onSubmit={this.handelSearchSubmit}
-          isVisibleNtEmpty={this.handleIsVisibleNtEmpty}
+          isVisibleNtEmpty={this.isVisibleNtEmpty}
         />
         {isVisibleNtEmpty && (
           <NoticicationViewEmpty isVisibleNtEmpty={isVisibleNtEmpty}>
