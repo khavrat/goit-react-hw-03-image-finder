@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import SearchErrorView from '../ErrorView/ErrorView';
 import LoadingView from '../LoadingView/LoadingView';
@@ -12,7 +13,16 @@ class ImageGallery extends Component {
   state = {
     response: null,
     loading: false,
-    error: '',
+    errorMessage: '',
+    currentPage: 1,
+  };
+
+  static propTypes = {
+    searchField: PropTypes.string.isRequired,
+    currentPage: PropTypes.number.isRequired,
+    getResponseData: PropTypes.func.isRequired,
+    handleIsError: PropTypes.func.isRequired,
+    onClickToImage: PropTypes.func.isRequired,
   };
 
   async componentDidUpdate(prevProps) {
@@ -29,37 +39,39 @@ class ImageGallery extends Component {
         const response = await axios.get(
           `${URL}?q=${nextSearch}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=${perPage}&page=${nextPage}`
         );
-        this.setState(
-          { response: response.data },
-          () => getResponseData(this.state.response),
+        this.setState({ response: response.data }, () =>
+          getResponseData(this.state.response)
         );
 
         if (response.data.hits.length === 0) {
           this.setState(
             {
-              error: `On "${nextSearch}" found nothing, try again`,
+              errorMessage: `On "${nextSearch}" found nothing, try again`,
               loading: false,
-            }, () => handleIsError(this.state.error)
+            },
+            () => handleIsError(this.state.errorMessage)
           );
-        }
-        if (nextPage > 1) {
+        } else if (nextPage > 1) {
           this.setState(
             prevState => ({
               images: [...prevState.images, ...response.data.hits],
               loading: false,
-              error: '',
+              errorMessage: null,
             }),
-            () => handleIsError(this.state.error)
+            () => handleIsError(this.state.errorMessage)
           );
         } else {
-          this.setState({
-            images: response.data.hits,
-            loading: false,
-            error: '',
-          }, () => handleIsError(this.state.error));
+          this.setState(
+            {
+              images: response.data.hits,
+              loading: false,
+              errorMessage: null,
+            },
+            () => handleIsError(this.state.errorMessage)
+          );
         }
       } catch (error) {
-        this.setState({ error: error.message, loading: false });
+        this.setState({ errorMessage: error.message, loading: false });
       }
     }
   }
@@ -75,10 +87,10 @@ class ImageGallery extends Component {
   };
 
   render() {
-    const { images, loading, error } = this.state;
+    const { images, loading, errorMessage } = this.state;
 
-    if (error) {
-      return <SearchErrorView message={error} />;
+    if (errorMessage) {
+      return <SearchErrorView message={errorMessage} />;
     }
     if (images) {
       return (

@@ -1,6 +1,7 @@
 import messageImg from 'Images/messageImg.png';
+import PropTypes from 'prop-types';
 
-export default function SearchErrorView({ message }) {
+function SearchErrorView({ message }) {
     return (
       <div className={`ErrorMessage ${message ? 'hide' : ''}`}>
         <img src={messageImg} width="400" alt="error message" />
@@ -8,3 +9,9 @@ export default function SearchErrorView({ message }) {
       </div>
     );
 }
+
+SearchErrorView.propTypes = {
+  message: PropTypes.string,
+};
+
+export default SearchErrorView;

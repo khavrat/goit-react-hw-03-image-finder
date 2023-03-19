@@ -1,6 +1,12 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Modal extends Component {
+  static propTypes = {
+    closeModal: PropTypes.func.isRequired,
+    children: PropTypes.node.isRequired,
+  };
+
   componentDidMount() {
     document.body.classList.add('no-scroll');
     window.addEventListener('keydown', this.handleKeyDown);

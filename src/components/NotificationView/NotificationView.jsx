@@ -1,8 +1,14 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import messageImg from 'Images/messageImg.png';
 
-class NoticicationView extends Component {
 
+class NoticicationView extends Component {
+  static propTypes = {
+    isVisibleNtEnd: PropTypes.bool.isRequired,
+    children: PropTypes.node.isRequired,
+  };
+  
   render() {
     const { isVisibleNtEnd } = this.props;
     return (

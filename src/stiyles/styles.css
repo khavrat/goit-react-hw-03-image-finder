@@ -181,35 +181,20 @@
     font-size: 24px;
     color: #1f1d1c;
     background-color: #5c919c;
-    animation-name: slideInError;
+    /* animation-name: slideInError;
     animation-duration: 1000ms;
     animation-delay: 2000ms;
-    animation-fill-mode: forwards;
+    animation-fill-mode: forwards; */
 }
-@keyframes slideInError {
+/* @keyframes slideInError {
   from {
     transform: translateY(0);
   }
   to {
     transform: translateY(-200%);
   }
-}
-
-/* .ErrorMessage.hide {
-  animation-name: slideOutError;
-      animation-duration: 1000ms;
-    animation-delay: 3000ms;
-    animation-fill-mode: forwards;
-}
-
-@keyframes  slideOutError {
-  from {
-    transform: translateY(200%);
-  }
-  to {
-    transform: translateY(0);
-  }
 } */
+
 
 
 /* Notification */
@@ -269,7 +254,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 320px;
+    height: 350px;
     font-family: 'Fira Sens';
     font-weight: 700;
     font-size: 20px;

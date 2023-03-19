@@ -1,6 +1,6 @@
 import { ThreeDots } from 'react-loader-spinner';
 
-export default function LoadingView() {
+function LoadingView() {
   return (
     <div className="Loading">
       <ThreeDots
@@ -20,3 +20,5 @@ export default function LoadingView() {
     </div>
   );
 }
+
+export default LoadingView;

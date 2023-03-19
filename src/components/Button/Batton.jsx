@@ -1,8 +1,14 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Button extends Component {
   state = {
     currentPage: 1,
+  };
+
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    onClick: PropTypes.func.isRequired,
   };
 
   onClick = () => {
