@@ -9,7 +9,6 @@ import Modal from './Modal/Modal';
 
 export default class App extends Component {
   state = {
-    images: null,
     response: null,
     searchField: '',
     isError: '',
@@ -76,7 +75,6 @@ export default class App extends Component {
       currentPage,
       searchField,
       response,
-      images,
       isVisibleBtn,
       selectedImage,
       notification: { isVisibleNtEnd, isVisibleNtEmpty },
