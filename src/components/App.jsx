@@ -3,7 +3,7 @@ import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Batton';
 import NotificationView from './NotificationView/NotificationView';
-import NotificationViewEmpty from './NotificationView/NotificationViewEmpty';
+// import NotificationViewEmpty from './NotificationView/NotificationViewEmpty';
 import Modal from './Modal/Modal';
 
 export default class App extends Component {
@@ -14,10 +14,10 @@ export default class App extends Component {
     currentPage: 1,
     selectedImage: null,
     // isVisibleBtn: false,
-    notification: {
-      // isVisibleNtEnd: false,
-      isVisibleNtEmpty: false,
-    },
+    // notification: {
+    //   // isVisibleNtEnd: false,
+    //   isVisibleNtEmpty: false,
+    // },
   };
 
   handleLoadMoreClick = prevState => {
@@ -31,9 +31,9 @@ export default class App extends Component {
     }
   }
 
-  isVisibleBtn = isVisibleBtn => {
-    this.setState({ isVisibleBtn });
-  };
+  // isVisibleBtn = isVisibleBtn => {
+  //   this.setState({ isVisibleBtn });
+  // };
 
   handleIsError = isError => {
     console.log('хэндлер ошибки');
@@ -75,7 +75,7 @@ export default class App extends Component {
       searchField,
       response,
       selectedImage,
-      notification: { isVisibleNtEnd, isVisibleNtEmpty },
+      // notification: { isVisibleNtEnd, isVisibleNtEmpty },
     } = this.state;
     return (
       <>
@@ -83,11 +83,11 @@ export default class App extends Component {
           onSubmit={this.handelSearchSubmit}
           isVisibleNtEmpty={this.isVisibleNtEmpty}
         />
-        {isVisibleNtEmpty && (
+        {/* {isVisibleNtEmpty && (
           <NotificationViewEmpty isVisibleNtEmpty={isVisibleNtEmpty}>
             Enter a word to search for
           </NotificationViewEmpty>
-        )}
+        )} */}
         <ImageGallery
           getResponseData={this.getResponseData}
           currentPage={currentPage}
@@ -107,12 +107,12 @@ export default class App extends Component {
           Load more
         </Button>
         {/* )}  */}
-        {isVisibleNtEnd && (
+        {/* {isVisibleNtEnd && ( */}
           <NotificationView response={response} currentPage={currentPage} isError={isError}>
             This is the last page of the "{searchField}". Look for anything
             else, please...
           </NotificationView>
-        )}
+        {/* )} */}
         {selectedImage && (
           <Modal closeModal={this.closeModal}>
             <img

@@ -17,48 +17,44 @@ class ImageGallery extends Component {
     const nextSearch = this.props.searchField;
     const prevPage = prevProps.currentPage;
     const nextPage = this.props.currentPage;
-      if (prevSearch !== nextSearch || prevPage !== nextPage) {
-        console.log('если не равен запрос или страница в ImageGallery');
-        try {
-          this.setState({ loading: true });
+    if (prevSearch !== nextSearch || prevPage !== nextPage) {
+      console.log('если не равен запрос или страница в ImageGallery');
+      try {
+        this.setState({ loading: true });
 
-          const data = await fetchImages(nextSearch, nextPage);
-          console.log('data в ImageGallery:>> ', data);
-          this.props.getResponseData(data);
+        const data = await fetchImages(nextSearch, nextPage);
+        console.log('data в ImageGallery:>> ', data);
+        this.props.getResponseData(data);
 
-          if (data.hits.length === 0) {
-            console.log('если массив =0 в ImageGallery');
-            throw new Error(`On "${nextSearch}" found nothing, try again`);
-          } else if (nextPage > 1) {
-            console.log('если следующая страница >0 в ImageGallery');
-            this.setState(
-              prevState => ({
-                images: [...prevState.images, ...data.hits],
-                loading: false,
-                error: '',
-              }),
-              () => {
-                this.props.handleImages(this.state.images);
-              }
-            );
-          } else {
-            console.log('если запрос первый в ImageGallery');
-            this.setState(
-              {
-                images: data.hits,
-                loading: false,
-                error: '',
-              },
-              () => {
-                this.props.handleImages(this.state.images);
-              }
-            );
-          }
-        } catch (error) {
-          console.log('catch error в ImageGallery');
-          this.setState({ error: error.message, loading: false });
+        if (data.hits.length === 0) {
+          console.log('если массив =0 в ImageGallery');
+          throw new Error(`On "${nextSearch}" found nothing, try again`);
+        } else if (nextPage > 1) {
+          console.log('если следующая страница >0 в ImageGallery');
+          this.setState(
+            prevState => ({
+              images: [...prevState.images, ...data.hits],
+              loading: false,
+              error: '',
+            }),
+            () => this.props.handleIsError(this.state.error)
+          );
+        } else {
+          console.log('если запрос первый в ImageGallery');
+          this.setState(
+            {
+              images: data.hits,
+              loading: false,
+              error: '',
+            },
+            () => this.props.handleIsError(this.state.error)
+          );
         }
+      } catch (error) {
+        console.log('catch error в ImageGallery', error);
+        this.setState({ error: error.message, loading: false }, ()=>{this.props.handleIsError(this.state.error)});
       }
+    }
   }
 
   handleImageClick = e => {
@@ -75,7 +71,7 @@ class ImageGallery extends Component {
   render() {
     console.log('рендер в ImageGallery');
     const { images, loading, error } = this.state;
-  console.log(images);
+    console.log(images);
 
     if (error) {
       return <SearchErrorView message={error} />;
