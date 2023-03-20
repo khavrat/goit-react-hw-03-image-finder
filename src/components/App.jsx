@@ -1,95 +1,82 @@
 import { Component } from 'react';
+import { perPage } from '../servises/getImages';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Batton';
-import NoticicationView from './NotificationView/NotificationView';
-import NoticicationViewEmpty from './NotificationView/NotificationViewEmpty';
+import NotificationView from './NotificationView/NotificationView';
+import NotificationViewEmpty from './NotificationView/NotificationViewEmpty';
 import Modal from './Modal/Modal';
-import { perPage } from './ImageGallery/ImageGallery';
 
 export default class App extends Component {
   state = {
+    images: null,
     response: null,
     searchField: '',
     isError: '',
     currentPage: 1,
     selectedImage: null,
-    isVisibleBtn: false,
+    // isVisibleBtn: false,
     notification: {
-      isVisibleNtEnd: false,
+      // isVisibleNtEnd: false,
       isVisibleNtEmpty: false,
     },
   };
 
-  componentDidUpdate(_, prevState) {
-    if (prevState.response !== this.state.response) {
-      this.isVisibleBtn();
-      this.isVisibleNtEnd();
-      // this.setState({
-      //   notification: { isVisibleNtEnd: false, isVisibleNtEmpty: false },
-      // });
-    }
+  handleLoadMoreClick = prevState => {
+    console.log('хэндлер currentPage');
+    this.setState(prevState => ({ currentPage: prevState.currentPage + 1 }));
+  };
+
+  componentDidUpdate(prevProps, prevState) {
     if (prevState.searchField !== this.state.searchField) {
-      this.setState({
-        currentPage: 1,
-        notification: { isVisibleNtEnd: false, isVisibleNtEmpty: false },
-      });
+      this.setState({ currentPage: 1 });
     }
   }
 
-  isVisibleNtEmpty = isVisibleNtEmpty => {
-    this.setState({ notification: { isVisibleNtEmpty } });
-  };
-
-  isVisibleBtn = () => {
-    const { response, currentPage } = this.state;
-    if (
-      response.hits.length === 0 ||
-      currentPage * perPage >= response.totalHits
-    ) {
-      this.setState({ isVisibleBtn: false });
-    } else if (response.hits.length !== 0) {
-      this.setState({ isVisibleBtn: true });
-    }
-  };
-
-  isVisibleNtEnd = () => {
-    const { response, currentPage, isError } = this.state;
-    if (
-      (response.hits.length === 0 && isError === '') ||
-      (currentPage * perPage >= response.totalHits && isError === '')
-    ) {
-      this.setState({ notification: { isVisibleNtEnd: true } });
-    }
+  isVisibleBtn = isVisibleBtn => {
+    this.setState({ isVisibleBtn });
   };
 
   handleIsError = isError => {
+    console.log('хэндлер ошибки');
     this.setState({ isError });
   };
 
   closeModal = () => {
+    console.log('хэндлер модалки');
     this.setState({ selectedImage: null });
   };
 
   getResponseData = response => {
+    console.log('хэндлер респонсдата');
     this.setState({ response });
   };
 
+
   handleImageClick = selectedImage => {
+    console.log('хэндлер выбранной картинки для модалки');
     this.setState({ selectedImage });
   };
 
   handelSearchSubmit = searchField => {
+    console.log('хэндлер инпута');
     this.setState({ searchField });
   };
 
-  handleLoadMoreClick = currentPage => {
-    this.setState({ currentPage });
+  handleImages = images => {
+    console.log('хэндлер images');
+    this.setState({ images });
   };
 
   render() {
+    console.log('рендер в арр');
+
     const {
+      isError,
+      currentPage,
       searchField,
+      response,
+      images,
       isVisibleBtn,
       selectedImage,
       notification: { isVisibleNtEnd, isVisibleNtEmpty },
@@ -101,25 +88,34 @@ export default class App extends Component {
           isVisibleNtEmpty={this.isVisibleNtEmpty}
         />
         {isVisibleNtEmpty && (
-          <NoticicationViewEmpty isVisibleNtEmpty={isVisibleNtEmpty}>
+          <NotificationViewEmpty isVisibleNtEmpty={isVisibleNtEmpty}>
             Enter a word to search for
-          </NoticicationViewEmpty>
+          </NotificationViewEmpty>
         )}
         <ImageGallery
           getResponseData={this.getResponseData}
+          currentPage={currentPage}
+          onClick={this.handleLoadMoreClick}
           searchField={this.state.searchField}
-          currentPage={this.state.currentPage}
           onClickToImage={this.handleImageClick}
           handleIsError={this.handleIsError}
+          handleImages={this.handleImages}
         />
-        {isVisibleBtn && (
-          <Button onClick={this.handleLoadMoreClick}>Load more</Button>
-        )}
+        {/* {isVisibleBtn && ( */}
+        <Button
+          onClick={this.handleLoadMoreClick}
+          response={response}
+          searchField={searchField}
+          currentPage={currentPage}
+        >
+          Load more
+        </Button>
+        {/* )}  */}
         {isVisibleNtEnd && (
-          <NoticicationView isVisibleNtEnd={isVisibleNtEnd}>
+          <NotificationView response={response} currentPage={currentPage} isError={isError}>
             This is the last page of the "{searchField}". Look for anything
             else, please...
-          </NoticicationView>
+          </NotificationView>
         )}
         {selectedImage && (
           <Modal closeModal={this.closeModal}>

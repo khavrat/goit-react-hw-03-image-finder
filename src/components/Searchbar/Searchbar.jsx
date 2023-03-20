@@ -4,27 +4,27 @@ import { FaSearch } from 'react-icons/fa';
 class Searchbar extends Component {
   state = {
     searchField: '',
-    isVisibleNtEmpty: false,
   };
 
   handleChange = e => {
+  console.log('обработка поля в Searchbar');
+
     const normalizeValue = e.currentTarget.value.toLowerCase();
     this.setState({ searchField: normalizeValue });
   };
 
   reset = () => {
+    console.log('очистка поля в Searchbar');
     this.setState({ searchField: '' });
   };
 
   handleSubmit = e => {
-    const { onSubmit, isVisibleNtEmpty } = this.props;
+    console.log('сабмит формы в Searchbar');
+    const { onSubmit } = this.props;
     e.preventDefault();
 
     if (!this.state.searchField.trim()) {
-      this.setState({ isVisibleNtEmpty: true }, () => {
-      isVisibleNtEmpty(this.state.isVisibleNtEmpty);
-      });
-      // return alert('Enter a word to search for');
+      return alert('Enter a word to search for');
     } else {
       onSubmit(this.state.searchField);
     }
@@ -33,6 +33,7 @@ class Searchbar extends Component {
   };
 
   render() {
+console.log('рендер в Searchbar');
     return (
       <header className="Searchbar">
         <form className="SearchForm" onSubmit={this.handleSubmit}>

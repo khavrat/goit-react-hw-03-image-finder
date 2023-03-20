@@ -1,70 +1,68 @@
 import { Component } from 'react';
-import axios from 'axios';
+import { fetchImages } from '../../servises/getImages';
 import SearchErrorView from '../ErrorView/ErrorView';
 import LoadingView from '../LoadingView/LoadingView';
 import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
 
-const URL = 'https://pixabay.com/api/';
-const API_KEY = '33239789-edeb40e5557373312058accfd';
-const perPage = '12';
-
 class ImageGallery extends Component {
   state = {
-    response: null,
+    images: null,
     loading: false,
     error: '',
   };
 
-  async componentDidUpdate(prevProps) {
-    const { getResponseData, handleIsError } = this.props;
+  async componentDidUpdate(prevProps, prevState) {
+    console.log('копронент обновился в ImageGallery');
     const prevSearch = prevProps.searchField;
     const nextSearch = this.props.searchField;
     const prevPage = prevProps.currentPage;
     const nextPage = this.props.currentPage;
+      if (prevSearch !== nextSearch || prevPage !== nextPage) {
+        console.log('если не равен запрос или страница в ImageGallery');
+        try {
+          this.setState({ loading: true });
 
-    if (prevSearch !== nextSearch || prevPage !== nextPage) {
-      this.setState({ loading: true });
+          const data = await fetchImages(nextSearch, nextPage);
+          console.log('data в ImageGallery:>> ', data);
+          this.props.getResponseData(data);
 
-      try {
-        const response = await axios.get(
-          `${URL}?q=${nextSearch}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=${perPage}&page=${nextPage}`
-        );
-        this.setState(
-          { response: response.data },
-          () => getResponseData(this.state.response),
-        );
-
-        if (response.data.hits.length === 0) {
-          this.setState(
-            {
-              error: `On "${nextSearch}" found nothing, try again`,
-              loading: false,
-            }, () => handleIsError(this.state.error)
-          );
+          if (data.hits.length === 0) {
+            console.log('если массив =0 в ImageGallery');
+            throw new Error(`On "${nextSearch}" found nothing, try again`);
+          } else if (nextPage > 1) {
+            console.log('если следующая страница >0 в ImageGallery');
+            this.setState(
+              prevState => ({
+                images: [...prevState.images, ...data.hits],
+                loading: false,
+                error: '',
+              }),
+              () => {
+                this.props.handleImages(this.state.images);
+              }
+            );
+          } else {
+            console.log('если запрос первый в ImageGallery');
+            this.setState(
+              {
+                images: data.hits,
+                loading: false,
+                error: '',
+              },
+              () => {
+                this.props.handleImages(this.state.images);
+              }
+            );
+          }
+        } catch (error) {
+          console.log('catch error в ImageGallery');
+          this.setState({ error: error.message, loading: false });
         }
-        if (nextPage > 1) {
-          this.setState(
-            prevState => ({
-              images: [...prevState.images, ...response.data.hits],
-              loading: false,
-              error: '',
-            }),
-            () => handleIsError(this.state.error)
-          );
-        } else {
-          this.setState({
-            images: response.data.hits,
-            loading: false,
-            error: '',
-          }, () => handleIsError(this.state.error));
-        }
-      } catch (error) {
-        this.setState({ error: error.message, loading: false });
       }
-    }
   }
 
   handleImageClick = e => {
+    console.log('обработчик клика в картинку в ImageGallery');
     const { images } = this.state;
     const { onClickToImage } = this.props;
 
@@ -75,7 +73,9 @@ class ImageGallery extends Component {
   };
 
   render() {
+    console.log('рендер в ImageGallery');
     const { images, loading, error } = this.state;
+  console.log(images);
 
     if (error) {
       return <SearchErrorView message={error} />;
@@ -87,7 +87,6 @@ class ImageGallery extends Component {
             {images.map(image => (
               <ImageGalleryItem key={image.id} image={image} />
             ))}
-            {}
           </ul>
           {loading && <LoadingView />}
         </>
@@ -97,4 +96,3 @@ class ImageGallery extends Component {
 }
 
 export default ImageGallery;
-export { perPage };

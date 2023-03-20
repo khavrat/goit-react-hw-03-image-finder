@@ -2,6 +2,7 @@ import messageImg from 'Images/messageImg.png';
 import PropTypes from 'prop-types';
 
 function SearchErrorView({ message }) {
+  console.log('функция лица ошибки');
     return (
       <div className={`ErrorMessage ${message ? 'hide' : ''}`}>
         <img src={messageImg} width="400" alt="error message" />
