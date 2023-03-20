@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { perPage } from '../servises/getImages';
 import Searchbar from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Batton';
@@ -75,7 +74,6 @@ export default class App extends Component {
       currentPage,
       searchField,
       response,
-      isVisibleBtn,
       selectedImage,
       notification: { isVisibleNtEnd, isVisibleNtEmpty },
     } = this.state;

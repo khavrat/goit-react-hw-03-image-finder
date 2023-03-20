@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import PropTypes from 'prop-types';
 import { perPage } from '../../servises/getImages';
 
 class Button extends Component {
