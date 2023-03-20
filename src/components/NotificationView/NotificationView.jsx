@@ -9,33 +9,28 @@ class NotificationView extends Component {
   };
 
   static propTypes = {
+    response: PropTypes.object,
+    currentPage: PropTypes.number.isRequired,
     children: PropTypes.node.isRequired,
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (prevProps.response !== this.props.response) {
-      console.log('this.props.response :>> ', this.props.response);
-     this.setState({ isVisibleNtEnd: false }, () => this.isVisibleNtEnd());
+      this.setState({ isVisibleNtEnd: false }, () => this.isVisibleNtEnd());
     }
   }
 
-  resetIsVisibleEnd = () => {
-  this.setState({isVisibleNtEnd: false})
-  }
-  
   isVisibleNtEnd = () => {
     const { response, currentPage, isError } = this.props;
-    console.log('isError в isVisibleNtEnd:>> ', isError);
     if (
       (response.hits.length === 0 && isError === '') ||
       (currentPage * perPage >= response.totalHits && isError === '')
     ) {
-      this.setState({ isVisibleNtEnd: true } );
-    } 
+      this.setState({ isVisibleNtEnd: true });
+    }
   };
 
   render() {
-    console.log('рендер конец картинок в NotificationView');
     const { isVisibleNtEnd } = this.state;
     return (
       <>
@@ -52,4 +47,5 @@ class NotificationView extends Component {
     );
   }
 }
+
 export default NotificationView;

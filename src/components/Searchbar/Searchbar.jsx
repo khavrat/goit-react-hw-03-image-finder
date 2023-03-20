@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FaSearch } from 'react-icons/fa';
 
 class Searchbar extends Component {
@@ -6,20 +7,20 @@ class Searchbar extends Component {
     searchField: '',
   };
 
-  handleChange = e => {
-  console.log('обработка поля в Searchbar');
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  };
 
+  handleChange = e => {
     const normalizeValue = e.currentTarget.value.toLowerCase();
     this.setState({ searchField: normalizeValue });
   };
 
   reset = () => {
-    console.log('очистка поля в Searchbar');
     this.setState({ searchField: '' });
   };
 
   handleSubmit = e => {
-    console.log('сабмит формы в Searchbar');
     const { onSubmit } = this.props;
     e.preventDefault();
 
@@ -33,7 +34,7 @@ class Searchbar extends Component {
   };
 
   render() {
-console.log('рендер в Searchbar');
+    const { searchField } = this.state;
     return (
       <header className="Searchbar">
         <form className="SearchForm" onSubmit={this.handleSubmit}>
@@ -48,7 +49,7 @@ console.log('рендер в Searchbar');
             autoFocus
             placeholder="Search images and photos..."
             name="searchField"
-            value={this.state.searchField}
+            value={searchField}
             onChange={this.handleChange}
           />
         </form>

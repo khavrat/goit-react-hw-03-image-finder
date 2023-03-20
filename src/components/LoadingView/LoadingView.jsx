@@ -1,7 +1,6 @@
 import { ThreeDots } from 'react-loader-spinner';
 
 function LoadingView() {
-  console.log('загрузчик лицо');
   return (
     <div className="Loading">
       <ThreeDots

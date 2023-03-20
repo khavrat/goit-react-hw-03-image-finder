@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 
 function ImageGalleryItem({ image }) {
-  console.log('лишки галереи в ImageGalleryItem');
   return (
     <li className="ImageGalleryItem">
       <img
